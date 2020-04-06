@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{{ annonce.title }}
+{% endblock %}
+{% block body %}
+<div class="annonce-title"
+	style="background-image: url({{ annonce.coverImage }})">
+	<div class="container">
+		<h1>
+			{{ annonce.title }}
+		</h1>
+		<p class="h2">
+			<strong>{{ annonce.price }} DH</strong>
+		</p>
+		<a href="#" class="btn btn-primary">Acheter</a>
+	</div>
+</div>
+<div class="container mt-4">
+	<div class="row">
+		<div class="col-md-8 mb-3">
+			{{ annonce.introduction }}
+			<div id="carouselExampleIndicators" class="carousel slide mt-3"
+				data-ride="carousel">
+				<ol class="carousel-indicators">
+				{% for image in annonce.images %}
+					<li data-target="#carouselExampleIndicators" data-slide-to="{{ loop.index0 }}"
+						{% if loop.first %}class="active"{% endif %}></li>
+				{% endfor %}
+				</ol>
+				<div class="carousel-inner">
+					{% for image in annonce.images %}
+					<div class="carousel-item {% if loop.first %}active{% endif %}">	
+						<img src="{{ image.url }}" class="d-block w-100" alt="First slide">
+					</div>
+					{% endfor %}
+				</div>
+				<a class="carousel-control-prev" href="#carouselExampleIndicators"
+					role="button" data-slide="prev"> <span
+					class="carousel-control-prev-icon" aria-hidden="true"></span> <span
+					class="sr-only">Previous</span>
+				</a> <a class="carousel-control-next" href="#carouselExampleIndicators"
+					role="button" data-slide="next"> <span
+					class="carousel-control-next-icon" aria-hidden="true"></span> <span
+					class="sr-only">Next</span>
+				</a>
+			</div>
+		</div>
+		<div class="col">
+			<div class="row">
+				<div class="col-4">
+					<img alt="avatar de user" src="http://placehold.it/64x64">
+				</div>
+				<div class="col mb-3">
+					<h3>User</h3>
+					<span class="badge badge-primary">3 annonces</span>
+				</div>
+				<p>presentation du user proprietaire de l'annonce</p>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
