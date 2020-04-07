@@ -47,15 +47,20 @@
 			</div>
 		</div>
 		<div class="col">
+		{% set a = annonce.author %}
 			<div class="row">
 				<div class="col-4">
-					<img alt="avatar de user" src="http://placehold.it/64x64">
+					<a href="{{ path('user_show' , {'slug': a.slug}) }}">
+						<img class="avatar avatar-medium" alt="avatar de {{ a.fullName }}" src="{{ a.picture }}">
+					</a>
 				</div>
 				<div class="col mb-3">
-					<h3>User</h3>
-					<span class="badge badge-primary">3 annonces</span>
+					<a href="{{ path('user_show' , {'slug': a.slug}) }}">
+						<h3>{{ a.fullName }}</h3>
+					</a>
+					<span class="badge badge-primary py-1 px-2">{{ a.annonces | length }} annonces</span>
 				</div>
-				<p>presentation du user proprietaire de l'annonce</p>
+				<p>{{ a.introduction }}</p>
 			</div>
 		</div>
 	</div>

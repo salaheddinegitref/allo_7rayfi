@@ -1,12 +1,30 @@
 div.container{
 	margin-top: 20px;
 }
+
 div.annonce-title{
 	padding: 2em;
 	background-size: cover;
 	background-position: center center;
 }
+
 div.annonce-title h1, div.annonce-title p{
 	color: white;
 	text-shadow: 3px 3px 3px rgba(0,0,0,0.5);	
+}
+
+.avatar{
+	max-width: 128px;
+	max-height: 128px;
+	border-radius: 30%;
+}
+
+.avatar-medium{
+	max-width: 100px;
+	max-height:100px;
+}
+
+.avatar-mini{
+	max-width: 50px;
+	max-height:50px;
 }

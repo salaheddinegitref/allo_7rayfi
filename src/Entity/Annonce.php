@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AnnonceRepository")
- * @ORM\HasLifecycleCallbacks
+ * @ORM\HasLifecycleCallbacks()
  *
  *@UniqueEntity(
  *  fields = {"title"},
@@ -63,6 +63,12 @@ class Annonce
      * @Assert\Valid()
      */
     private $images;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="annonces")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Author;
 
     public function __construct()
     {
@@ -175,6 +181,18 @@ class Annonce
                 $image->setAnnonce(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->Author;
+    }
+
+    public function setAuthor(?User $Author): self
+    {
+        $this->Author = $Author;
 
         return $this;
     }

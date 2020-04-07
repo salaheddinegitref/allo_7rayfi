@@ -1,0 +1,23 @@
+{% set url =  path('annonces_show', {'slug': annonce.slug}) %}
+<div class="col-md-4">
+	<div class="card bg-light mb-3">
+		<div class="card-header text-center">
+			<a href="{{ url }}"> {{ annonce.title }}
+			</a> <br> <small>qui a poster l'annonce</small>
+		</div>
+		<a href="{{ url }}"> <img alt="image de l'artisan"
+			src="{{ annonce.coverImage }}"
+			style="height: 200px; width: 100%; display: block">
+		</a>
+		<div class="card-body">
+			<h4 class="card-title">
+				{{ annonce.price }}
+				DH
+			</h4>
+			<p class="card-text">
+				{{ annonce.introduction }}
+			</p>
+			<a href="{{ url }}" class="btn btn-secondary">Voir plus !</a>
+		</div>
+	</div>
+</div>
