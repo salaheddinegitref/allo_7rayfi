@@ -10,6 +10,7 @@ use Cocur\Slugify\Slugify;
 use App\Entity\Image;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Entity\Role;
 
 class AppFixtures extends Fixture
 {
@@ -22,6 +23,25 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('FR-fr');
+        
+        //creation du role admin
+        $adminRole = new Role();
+        $adminRole->setTitle('ROLE_ADMIN');
+        $manager->persist($adminRole);
+        
+        //creation de l'utilisateur admin
+        $adminUser = new User();
+        $adminUser->setFirstName('Ali')
+                  ->setLastName('Ait Nasser')
+                  ->setEmail('aliii.nassser@gmail.com')
+                  ->setAddress('Rue 62 N 16 Rabat')
+                  ->setAge(30)
+                  ->setIntroduction('Une petite presentation')
+                  ->setHash($this->encoder->encodePassword($adminUser, "alixisali"))
+                  ->setPicture('/images/picture.jpg')
+                  ->setPhone('0669945363')
+                  ->addUserRole($adminRole);
+        $manager->persist($adminUser);
         
         //gestion des users
         

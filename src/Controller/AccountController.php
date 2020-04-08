@@ -14,6 +14,7 @@ use App\Form\AccountType;
 use App\Entity\PasswordUpdate;
 use App\Form\UpdatePasswordType;
 use Symfony\Component\Form\FormError;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class AccountController extends AbstractController
 {
@@ -83,6 +84,8 @@ class AccountController extends AbstractController
      * 
      * @Route("/account/edit", name="account_edit")
      * 
+     * @IsGranted("ROLE_USER")
+     * 
      * @return Response
      */
     public function editProfil(Request $request){
@@ -110,6 +113,8 @@ class AccountController extends AbstractController
      * 
      * @Route("/account/password-update", name ="password_update")
      * 
+     * @IsGranted("ROLE_USER")
+     * 
      * @return Response
      */
     public function updatePassword(Request $request, UserPasswordEncoderInterface $encoder){
@@ -126,7 +131,9 @@ class AccountController extends AbstractController
             $manager = $this->getDoctrine()->getManager();
             
             //verifier que le oldpassword est le password actuel
+            
             if(!password_verify($passwordUpdate->getOldPassword(), $user->getHash())){
+                
                 //gerer les erreurs 
                 
                 $form->get('oldPassword')->addError(new FormError("Le mot de passe est incorrect !"));
@@ -156,6 +163,8 @@ class AccountController extends AbstractController
      * permet d'afficher mon profile
      * 
      * @Route("/account", name="my_account")
+     * 
+     * @IsGranted("ROLE_USER")
      * 
      * @return Response
      */

@@ -11,6 +11,8 @@ use App\Form\AnnonceType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Image;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class AnnonceController extends AbstractController
 {
@@ -30,6 +32,9 @@ class AnnonceController extends AbstractController
      * permet de cree une annonce
      *
      * @Route("annonces/new", name="annonces_create")
+     * 
+     * @IsGranted("ROLE_USER")
+     * 
      * @return Response
      */
     public function create(Request $request){
@@ -71,6 +76,8 @@ class AnnonceController extends AbstractController
      * permet d'afficher le formulaire d'edition
      * 
      * @Route("/annonces/{slug}/edit", name="annonces_edit")
+     * 
+     * @Security("is_granted('ROLE_USER') and user === annonce.getAuthor()")
      * 
      * @return Response
      */
@@ -118,6 +125,30 @@ class AnnonceController extends AbstractController
         return $this->render('annonce/show.html.twig', [
             'annonce' => $annonce
         ]);
+    }
+    
+    /**
+     * permet de supprimer l'annonce
+     * 
+     * @Route("/annonces/{slug}/delete", name="annonces_delete")
+     * 
+     * @Security("is_granted('ROLE_USER') and user === annonce.getAuthor()")
+     * 
+     * @return Response
+     * 
+     */
+    public function delete(Annonce $annonce){
+        
+        $manager = $this->getDoctrine()->getManager();
+        $manager->remove($annonce);
+        $manager->flush();
+        
+        $this->addFlash(
+            'success',
+            "L'annonce <strong>{$annonce->getTitle()}</strong> a bien été supprimer !"
+        );
+        
+        return $this->redirectToRoute('annonces_index');
     }
     
 }
