@@ -18,7 +18,7 @@
 			<a href="{{ path('annonces_delete', {'slug': annonce.slug}) }}" class="btn btn-danger" 
 				onclick="return confirm(`Êtes vous sur de vouloir supprimer l'annonce ?`)">Supprimer l'annonce</a>
 		{% else %}
-			<a href="#" class="btn btn-primary">Acheter</a>
+			<a href="{{ path('achat_create', {'slug': annonce.slug}) }}" class="btn btn-primary">Commander :</a>
 		{% endif %}	
 	</div>
 </div>
@@ -51,6 +51,52 @@
 					class="sr-only">Next</span>
 				</a>
 			</div>
+			<hr>
+			<h2 class="mb-3">Commentaires <i class="fas fa-comments"></i></h2>
+				<div class="alert alert-light">
+					<h2 class="alert-heading">Tapez votre commentaire <i class="far fa-comment-dots"></i></h2>
+			        
+    					 {{ form_start(form) }}
+    					 {{ form_widget(form) }}
+    					 <button type="submit" class="btn btn-success">Confirmer</button>
+    					 {{ form_end(form) }}
+
+				</div>
+			{% if annonce.comments | length > 0 %}
+			
+				<div class="alert alert-info">
+					<h4 class="alert-heading text-center">
+						<div class="row align-items-center">
+							<div class="col">
+								Note globale de l'annonce<br>
+								<small>Calculer sur {{ annonce.comments | length }} Avis</small>
+							</div>
+							<div class="col">
+							
+								{% include 'partials/rating.html.twig' with {'rating': annonce.avgRatings} %}
+							
+							</div>
+						</div>
+					</h4>
+				</div>
+				
+				{% for comment in annonce.comments %}
+				
+					<div class="bg-light rounded mb-2 py-2 px-2">
+						<strong>{{ comment.author.fullNAme }} a dit :</strong> 
+						<blockquote>{{ comment.content }}</blockquote>
+						<strong>Note donnée : </strong>
+						
+						{% include 'partials/rating.html.twig' with {'rating' : comment.rating} %}
+						
+					</div>
+					
+				{% endfor %}
+			{% else %}
+			
+				<h2>Cette annonce n'a pas encore de commentaires ...</h2>
+				
+			{% endif %}
 		</div>
 		<div class="col">
 		{% set a = annonce.author %}

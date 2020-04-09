@@ -11,6 +11,8 @@ use App\Entity\Image;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\Role;
+use App\Entity\Comment;
+use App\Entity\Achat;
 
 class AppFixtures extends Fixture
 {
@@ -101,7 +103,45 @@ class AppFixtures extends Fixture
                 $manager->persist($image);
             }
             
-            $manager->persist($annonce);                  
+            //gestion des achats
+            
+            for ($x = 0; $x <= mt_rand(0, 5); $x++) {
+                $achat = new Achat();
+                
+                $createdAt = $faker->dateTimeBetween('-6 months');
+                $quantity = mt_rand(1,5);
+                $amount = $annonce->getPrice() * $quantity;
+                
+                $buyer = $users[mt_rand(0, count($users) - 1)];
+                
+                $achat->setBuyer($buyer)
+                      ->setAnnonce($annonce)
+                      ->setAmount($amount)
+                      ->setCreatedAt($createdAt)
+                      ->setQuantity($quantity);
+                
+                $manager->persist($achat);
+            
+            }
+            
+            //gestion des commentaires
+            for ($a = 0; $a < mt_rand(1,3); $a++) {
+                if(mt_rand(0,1)){
+                    $comment = new Comment();
+                    
+                    $user = $users[mt_rand(0, count($users) - 1)];
+                    
+                    $comment->setContent($faker->paragraph())
+                    ->setRating(mt_rand(1,5))
+                    ->setAuthor($user)
+                    ->setAnnonce($annonce);
+                    
+                    $manager->persist($comment);
+            }  
+                
+            }
+            
+            $manager->persist($annonce);     
         }
 
         $manager->flush();

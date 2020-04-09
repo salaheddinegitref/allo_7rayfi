@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Passez votre commande{% endblock %}
+
+{% block body %}
+<div class="container">
+	<h1>Passez votre :</h1>
+	
+	<p>Vous êtes sur le point de commander l'annonce de <strong>{{ annonce.author.fullName }}</strong>
+	, dites nous tout, on s'occupe du reste !</p>
+	
+	<div class="alert alert-light">
+		<div class="row">
+			<div class="col-7">
+			
+				{{ form_start(form) }}
+				
+				<h4 class="my-3"> Quantité :</h4>
+				
+        		{{ form_widget(form) }}
+        			
+        		<h4 class="my-3">Montant de l'annonce : <span id="amount">...</span> DH</h4>
+        		
+        		<span id = "quantity"> ... </span> Article(s)
+        		
+        		<h4 class="my-3" style="color:black">Vous avez terminé !</h4>
+        		
+        		<button type="submit" class="btn btn-success">Commander !</button>
+        		{{ form_end(form) }}
+			</div>
+			<div class="col">
+				<div class="card-body">
+					<p>{{ annonce.title }}</p>
+					<p>Prix de l'annonce :<strong> {{ annonce.price }}</strong> DH</p>
+					<img alt="image de l'artisan" src="{{ annonce.coverImage }}" style="height: 200px; width: 100%; display: block">
+        			<p class="card-text">
+        				{{ annonce.introduction }}
+        			</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+
+	$(document).ready(function(){
+		
+		$('#achat_quantity').on('change', achatQuantity);
+		console.log('#achat_quantity');
+	})
+
+	function achatQuantity(){
+		
+		const quantity = $('#achat_quantity').val();
+
+		if(quantity > 0){
+			
+			const amount = quantity * {{ annonce.price }};
+
+			$('#amount').text(amount);
+			$('#quantity').text(quantity);
+		}
+	}
+	
+</script>
+{% endblock %}

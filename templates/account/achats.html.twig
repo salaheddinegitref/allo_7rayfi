@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos commandes {% endblock %}
+
+{% block body %}
+<div class="container">
+	<h1>Mes commandes :</h1>
+	<div class="alert alert-info">
+		<p>Retrouvez ci-dessous vos commandes :</p>
+	</div>
+	
+	{% for achat in app.user.achats %}
+	
+	<div class="row mt-4">
+		<div class="col-3">
+			<img src="{{ achat.annonce.coverImage }}" alt="image de l'annonce" class="img-fluid">
+		</div>
+		<div class="col-9">
+			<h4>{{ achat.annonce.title }}</h4>
+			<p>
+			Commande N° : <strong>{{ achat.id }}</strong><br>
+			Commander le : {{ achat.createdAt | date('d/m/Y') }} <br>
+			Prix : {{ achat.amount }} DH
+			</p>
+			<a href="{{ path('achat_show', {'id': achat.id}) }}" class="btn btn-info">Plus d'information</a>
+		</div>
+	</div>
+	
+	{% endfor %}
+</div>
+{% endblock %}

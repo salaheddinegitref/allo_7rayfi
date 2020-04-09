@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Achat;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -70,9 +71,21 @@ class Annonce
      */
     private $Author;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="annonce", orphanRemoval=true)
+     */
+    private $comments;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Achat", mappedBy="annonce")
+     */
+    private $achats;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->achats = new ArrayCollection();
     }
 
     /**
@@ -87,6 +100,48 @@ class Annonce
             $slugify = new Slugify();
             $this->slug = $slugify->slugify($this->title);
         }
+    }
+    
+    /**
+     * Permet de retourner le commentaire  d'un auteur  par rapport a une annonce
+     * 
+     * @param User $author
+     * @return Comment|NULL
+     */
+    public function getCommentFromAuthor(User $author){
+       
+        foreach ($this->comments as $comment){
+            
+            if($comment->getAuthor() === $author){
+                return $comment;
+            }
+            else{
+                return null;
+            }
+           
+        }
+    }
+    
+    /**
+     * Permet de calculer la note generale de l'annonce
+     * 
+     * @return float
+     */
+    public function getAvgRatings(){
+        
+        //calculer la somme des notations par basculer sur les commentaires et recuperer le total
+        
+        $sum = array_reduce($this->getComments()->toArray(), function($total, $comment){
+            return $total + $comment->getRating();
+        }, 0);
+        
+        //faire la devision pour voir  la moyenne
+        
+            // condition pour voir si il a deja un commentaire sur l'annonce si nn on retourn 0
+            
+            if(count($this->comments) > 0) return $sum / count($this->comments);
+            
+            return 0;
     }
     
     public function getId(): ?int
@@ -193,6 +248,68 @@ class Annonce
     public function setAuthor(?User $Author): self
     {
         $this->Author = $Author;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setAnnonce($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getAnnonce() === $this) {
+                $comment->setAnnonce(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Achat[]
+     */
+    public function getAchats(): Collection
+    {
+        return $this->achats;
+    }
+
+    public function addAchat(Achat $achat): self
+    {
+        if (!$this->achats->contains($achat)) {
+            $this->achats[] = $achat;
+            $achat->setAnnonce($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAchat(Achat $achat): self
+    {
+        if ($this->achats->contains($achat)) {
+            $this->achats->removeElement($achat);
+            // set the owning side to null (unless already changed)
+            if ($achat->getAnnonce() === $this) {
+                $achat->setAnnonce(null);
+            }
+        }
 
         return $this;
     }

@@ -173,6 +173,18 @@ class AccountController extends AbstractController
             'user' => $this->getUser()
         ]);
     }
+    
+    /**
+     * afficher les achats d'un utilisateurs
+     * 
+     * @Route("/account/achats", name = "account_achats")
+     * 
+     * @return Response
+     */
+    public function achats(){
+        
+        return $this->render('account/achats.html.twig');
+    }
 }
 
 

@@ -13,6 +13,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Image;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use App\Entity\Comment;
+use App\Form\CommentType;
 
 class AnnonceController extends AbstractController
 {
@@ -121,9 +123,35 @@ class AnnonceController extends AbstractController
      * 
      * @return Response
      */
-    public function show(Annonce $annonce){
+    public function show(Annonce $annonce, Request $request){
+        
+        $comment = new Comment();
+        
+        $form = $this->createForm(CommentType::class, $comment);
+        
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()){
+            
+            $manager = $this->getDoctrine()->getManager();
+            
+            $comment->setAnnonce($annonce)
+                    ->setAuthor($this->getUser());
+            
+                  
+            $this->addFlash(
+                   'success',
+                   "Votre commentaire a bien été publier !"
+            );
+            
+            $manager->persist($comment);
+            $manager->flush();
+        }
+        
+        
         return $this->render('annonce/show.html.twig', [
-            'annonce' => $annonce
+            'annonce' => $annonce,
+            'form'    => $form->createView()
         ]);
     }
     
