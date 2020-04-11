@@ -52,16 +52,7 @@
 				</a>
 			</div>
 			<hr>
-			<h2 class="mb-3">Commentaires <i class="fas fa-comments"></i></h2>
-				<div class="alert alert-light">
-					<h2 class="alert-heading">Tapez votre commentaire <i class="far fa-comment-dots"></i></h2>
-			        
-    					 {{ form_start(form) }}
-    					 {{ form_widget(form) }}
-    					 <button type="submit" class="btn btn-success">Confirmer</button>
-    					 {{ form_end(form) }}
 
-				</div>
 			{% if annonce.comments | length > 0 %}
 			
 				<div class="alert alert-info">
@@ -81,9 +72,9 @@
 				</div>
 				
 				{% for comment in annonce.comments %}
-				
+				<h2 class="mb-3">Commentaires <i class="fas fa-comments"></i></h2>
 					<div class="bg-light rounded mb-2 py-2 px-2">
-						<strong>{{ comment.author.fullNAme }} a dit :</strong> 
+						<strong>{{ comment.author.firstNAme }} a dit :</strong> 
 						<blockquote>{{ comment.content }}</blockquote>
 						<strong>Note donnée : </strong>
 						

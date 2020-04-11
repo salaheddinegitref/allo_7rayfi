@@ -132,13 +132,12 @@ class AppFixtures extends Fixture
                     $user = $users[mt_rand(0, count($users) - 1)];
                     
                     $comment->setContent($faker->paragraph())
-                    ->setRating(mt_rand(1,5))
-                    ->setAuthor($user)
-                    ->setAnnonce($annonce);
+                            ->setRating(mt_rand(1,5))
+                            ->setAuthor($user)
+                            ->setAnnonce($annonce);
                     
                     $manager->persist($comment);
-            }  
-                
+               }      
             }
             
             $manager->persist($annonce);     

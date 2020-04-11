@@ -2,31 +2,26 @@
 
 namespace App\Form;
 
-use App\Entity\User;
+use App\Entity\Comment;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class AccountType extends ApplicationType
+class AdminCommentType extends ApplicationType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName')
-            ->add('lastName')
-            ->add('email')
-            ->add('age')
-            ->add('phone')
-            ->add('address')
-            ->add('picture')
-            ->add('introduction')
+            ->add('content', TextareaType::class, $this->getConfig('Contenu du commentaire :', 
+                'Modifier / Corriger le contenu du commentaire'))
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => Comment::class,
         ]);
     }
 }

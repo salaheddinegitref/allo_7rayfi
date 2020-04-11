@@ -6,10 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Annonce;
 use App\Form\AchatType;
+use App\Form\CommentType;
 use App\Entity\Achat;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Entity\Comment;
 
 class AchatController extends AbstractController
 {
@@ -57,10 +59,33 @@ class AchatController extends AbstractController
      * 
      * @return Response
      */
-    public function show(Achat $achat){
+    public function show(Achat $achat, Request $request){
+        
+        $comment = new Comment();
+        
+        $form = $this->createForm(CommentType::class, $comment);
+        
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()){
+            
+            $manager = $this->getDoctrine()->getManager();
+            
+            $comment->setAnnonce($achat->getAnnonce())
+                    ->setAuthor($this->getUser());
+            
+            $manager->persist($comment);
+            $manager->flush();
+            
+            $this->addFlash(
+                'success',
+                "Votre commentaire a bien été publier !"
+                );
+        }
         
         return $this->render('achat/show.html.twig', [
-            'achat' => $achat
+            'achat' => $achat,
+            'form'    => $form->createView()
         ]);
     }
 }

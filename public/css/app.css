@@ -35,12 +35,21 @@ div.annonce-title .btn{
 	max-height:50px;
 }
 
+.avatar-micro{
+	max-width: 35px;
+	max-height:35px;
+}
+
 span.rating i {
 	color: goldenrod;
 }
 
 .alert a {
 	text-decoration: none;
+}
+
+.alert .btn{
+	color: white;
 }
 
 

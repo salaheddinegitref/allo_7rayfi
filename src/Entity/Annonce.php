@@ -110,16 +110,12 @@ class Annonce
      */
     public function getCommentFromAuthor(User $author){
        
-        foreach ($this->comments as $comment){
+        foreach($this->comments as $comment){
             
-            if($comment->getAuthor() === $author){
-                return $comment;
-            }
-            else{
-                return null;
-            }
-           
+            if($comment->getAuthor() === $author) return $comment;
         }
+        
+        return null;
     }
     
     /**
@@ -131,7 +127,8 @@ class Annonce
         
         //calculer la somme des notations par basculer sur les commentaires et recuperer le total
         
-        $sum = array_reduce($this->getComments()->toArray(), function($total, $comment){
+        $sum = array_reduce(
+            $this->getComments()->toArray(), function($total, $comment){
             return $total + $comment->getRating();
         }, 0);
         

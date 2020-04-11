@@ -42,7 +42,6 @@ class Achat
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\GreaterThan(1)
      */
     private $quantity;
     
@@ -51,6 +50,7 @@ class Achat
      * permet d'initialisé le date de creation et le montant
      * 
      * @ORM\PrePersist
+     * @ORM\PreUpdate
      */
     public function prePersist(){
         if(empty($this->createdAt)){

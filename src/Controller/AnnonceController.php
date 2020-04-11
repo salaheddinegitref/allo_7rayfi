@@ -123,35 +123,10 @@ class AnnonceController extends AbstractController
      * 
      * @return Response
      */
-    public function show(Annonce $annonce, Request $request){
-        
-        $comment = new Comment();
-        
-        $form = $this->createForm(CommentType::class, $comment);
-        
-        $form->handleRequest($request);
-        
-        if($form->isSubmitted() && $form->isValid()){
-            
-            $manager = $this->getDoctrine()->getManager();
-            
-            $comment->setAnnonce($annonce)
-                    ->setAuthor($this->getUser());
-            
-                  
-            $this->addFlash(
-                   'success',
-                   "Votre commentaire a bien été publier !"
-            );
-            
-            $manager->persist($comment);
-            $manager->flush();
-        }
-        
+    public function show(Annonce $annonce){
         
         return $this->render('annonce/show.html.twig', [
-            'annonce' => $annonce,
-            'form'    => $form->createView()
+            'annonce' => $annonce
         ]);
     }
     

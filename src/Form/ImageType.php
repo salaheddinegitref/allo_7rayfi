@@ -9,19 +9,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class ImageType extends AbstractType
+class ImageType extends ApplicationType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('url', UrlType::class, [
+            ->add('url', TextType::class, [
                 'attr' => [
-                    'placeholder' => "URL de l'image"
+                    'placeholder' => "URL de l'image :"
                 ]
             ])
             ->add('caption', TextType::class, [
                 'attr' => [
-                    'placeholder' => "Titre de l'image"
+                    'placeholder' => "Titre de l'image :"
                 ]
             ])
         ;
