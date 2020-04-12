@@ -3,6 +3,7 @@
 {% block title %}Administration des annonces !{% endblock %}
 
 {% block body %}
+
 <div class="container-fluid">
 	<h1 class="my-5"><i class="fas fa-bullhorn"></i> Gestion des annonces :</h1>
 	<table class="table table-hover">
@@ -17,7 +18,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for annonce in annonces %}
+			{% for annonce in pagination.data %}
 			<tr>
 				<td>{{ annonce.id }}</td>
 				<td>{{ annonce.title }}</td>
@@ -38,5 +39,6 @@
 			{% endfor %}
 		</tbody>
 	</table>
+    {{ pagination.display() }}
 </div>
 {% endblock %}

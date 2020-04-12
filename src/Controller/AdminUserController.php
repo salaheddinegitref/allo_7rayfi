@@ -9,18 +9,21 @@ use App\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\AccountType;
 use Symfony\Component\HttpFoundation\Response;
+use App\Service\PaginationService;
 
 class AdminUserController extends AbstractController
 {
     /**
-     * @Route("/admin/users", name="admin_users_index")
+     * @Route("/admin/users/{page<\d+>?1}", name="admin_users_index")
      */
-    public function index(UserRepository $repo)
+    public function index($page, PaginationService $pagination)
     {
-        $users = $repo->findAll();
+        $pagination->setEntityClass(User::class)
+                    ->setPage($page)
+                    ->setLimit(5);
         
         return $this->render('admin/user/index.html.twig', [
-            'users' => $users
+            'pagination' => $pagination
         ]);
     }
     

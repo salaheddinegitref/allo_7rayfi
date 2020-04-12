@@ -9,21 +9,25 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Comment;
 use App\Form\AdminCommentType;
 use Symfony\Component\HttpFoundation\Request;
+use App\Service\PaginationService;
 
 class AdminCommentController extends AbstractController
 {
     /**
      * permet d'afficher tout les commentaires 
      * 
-     * @Route("/admin/comments", name="admin_comments_index")
+     * @Route("/admin/comments/{page<\d+>?1}", name="admin_comments_index")
      * 
      * @return Response
      */
-    public function index(CommentRepository $repo)
+    public function index($page, PaginationService $pagination)
     {
+        $pagination->setEntityClass(Comment::class)
+                    ->setPage($page)
+                    ->setLimit(5);
         
         return $this->render('admin/comment/index.html.twig', [
-            'comments' => $repo->findAll()
+            'pagination' => $pagination
         ]);
     }
     

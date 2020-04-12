@@ -9,16 +9,21 @@ use App\Entity\Annonce;
 use App\Form\AnnonceType;
 use App\Repository\AnnonceRepository;
 use Symfony\Component\HttpFoundation\Request;
+use App\Service\PaginationService;
 
 class AdminAnnonceController extends AbstractController
 {
     /**
-     * @Route("/admin/annonces", name="admin_annonces_index")
+     * @Route("/admin/annonces/{page<\d+>?1}", name="admin_annonces_index")
      */
-    public function index(AnnonceRepository $repo)
+    public function index($page, PaginationService $pagination)
     {
+        $pagination->setEntityClass(Annonce::class)
+                    ->setPage($page);
+        
+
         return $this->render('admin/annonce/index.html.twig', [
-            'annonces' => $repo->findAll()
+            'pagination' => $pagination
         ]);
     }
     

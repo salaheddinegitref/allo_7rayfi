@@ -9,18 +9,20 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Achat;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\AdminAchatType;
+use App\Service\PaginationService;
 
 class AdminAchatController extends AbstractController
 {
     /**
-     * @Route("/admin/achats", name="admin_achats_index")
+     * @Route("/admin/achats/{page<\d+>?1}", name="admin_achats_index")
      */
-    public function index(AchatRepository $repo)
+    public function index($page, PaginationService $pagination)
     {
-        $achats = $repo->findAll();
+        $pagination->setEntityClass(Achat::class)
+                    ->setPage($page);
         
         return $this->render('admin/achat/index.html.twig', [
-            'achats' => $achats
+            'pagination' => $pagination
         ]);
     }
     
