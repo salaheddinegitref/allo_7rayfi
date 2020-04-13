@@ -17,96 +17,29 @@
         <h2 class="my-5">Les Artisans du mois</h2>
         
         <div class="row">
-        
+        	{% for data in users %}
         	<div class="col">
         		<div class="card border-secondary mb-3">
         			<div class="card-body">
-        				<h4 class="card-title">Ali ali</h4>
+        				<h4 class="card-title">{{ data.user.fullName }}</h4>
         				<hr>
         				<div class="card-text">
-        					<img src="/images/picture.jpg" alt="avatar du user" class="avatar avatar-medium float-left mr-3">
-        					<p>Une petit description de l'artisan du mois</p>
-        					<a href="#" class="btn btn-success float-right">Voir le profile :</a>
+        					<img src="{{ data.user.picture }}" alt="avatar du user" class="avatar avatar-medium float-left mr-3">
+        					<p>{{ data.user.introduction }}</p>
+        					<a href="{{ path('user_show',{'slug': data.user.slug}) }}" class="btn btn-success float-right">Voir le profile :</a>
         				</div>
         			</div>
         		</div>
         	</div>
-        	
-        	<div class="col">
-        		<div class="card border-secondary mb-3">
-        			<div class="card-body">
-        				<h4 class="card-title">Ali ali</h4>
-        				<hr>
-        				<div class="card-text">
-        					<img src="/images/picture.jpg" alt="avatar du user" class="avatar avatar-medium float-left mr-3">
-        					<p>Une petit description de l'artisan du mois</p>
-        					<a href="#" class="btn btn-success float-right">Voir le profile :</a>
-        				</div>
-        			</div>
-        		</div>
-        	</div>
-        	
+        	{% endfor %}
         </div>
         
         <h2 class="my-5">Annonces Stars :</h2>
         
         <div class="row">
-        	<div class="col-md-4">
-        		<div class="card bg-light mb-3">
-        			<div class="card-header text-center">
-        				Samir Karim <strong>plombier</strong> <br>
-        				<small>pas encore noté</small>
-        			</div>
-        			<img alt="image de l'artisan" src="http://placehold.it/1000x400" style="height: 200px; width: 100%; display: block">
-        			<div class="card-body">
-        				<h4 class="card-title">
-        					Titre de l'annonce
-        				</h4>
-        				<p class="card-text">
-        					professionnalisme, ponctualité et honnêteté
-        				</p>
-        				<a href="#" class="btn btn-secondary">En savoir plus :</a>
-        			</div>
-        		</div>
-        	</div>
-        	
-        	<div class="col-md-4">
-        		<div class="card bg-light mb-3">
-        			<div class="card-header text-center">
-        				Samir Karim <strong>plombier</strong> <br>
-        				<small>pas encore noté</small>
-        			</div>
-        			<img alt="image de l'artisan" src="http://placehold.it/1000x400" style="height: 200px; width: 100%; display: block">
-        			<div class="card-body">
-        				<h4 class="card-title">
-        					Titre de l'annonce
-        				</h4>
-        				<p class="card-text">
-        					professionnalisme, ponctualité et honnêteté
-        				</p>
-        				<a href="#" class="btn btn-secondary">En savoir plus :</a>
-        			</div>
-        		</div>
-        	</div>
-        	
-        	<div class="col-md-4">
-        		<div class="card bg-light mb-3">
-        			<div class="card-header text-center">
-        				Samir Karim <strong>plombier</strong> <br>
-        				<small>pas encore noté</small>
-        			</div>
-        			<img alt="image de l'artisan" src="http://placehold.it/1000x400" style="height: 200px; width: 100%; display: block">
-        			<div class="card-body">
-        				<h4 class="card-title">
-        					Titre de l'annonce
-        				</h4>
-        				<p class="card-text">
-        					professionnalisme, ponctualité et honnêteté
-        				</p>
-        				<a href="#" class="btn btn-secondary">En savoir plus :</a>
-        			</div>
-        		</div>
-        	</div>
+			{% for data in annonces %}
+				{% include 'annonce/_annonces.html.twig' with {'annonce': data.annonce} %}
+			{% endfor %}
         </div>
 	</div>
 {% endblock %}
