@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos commandes {% endblock %}
+
+{% block body %}
+<div class="container">
+	<h1 class="my-5">Mes commandes :</h1>
+	<div class="alert alert-info">
+		<p>Retrouvez ci-dessous vos commandes :</p>
+	</div>
+	
+	{% for achat in app.user.achats %}
+	
+	<div class="row mt-4">
+		<div class="col-md-3">
+			<img src="{{ achat.annonce.coverImage }}" alt="image de l'annonce" class="img-fluid">
+			<div class="mt-2">
+                {% set comment = achat.annonce.commentFromAuthor(app.user) %}
+				
+				{% if comment is not null %}
+					<strong>Note donnée :</strong> {% include 'partials/rating.html.twig' with {'rating' : comment.rating} %}
+				{% else %}
+					Vous n'avez pas encore donné de note.<br>
+					<a href="{{ path('achat_show', {'id': achat.id} ) }}#comment">Je donne mon avis !</a>
+				
+				{% endif %}
+			</div>
+		</div>
+		<div class="col-md-9">
+			<h4>{{ achat.annonce.title }}</h4>
+			<p>
+			Commande N° : <strong>{{ achat.id }}</strong><br>
+			Commander le : {{ achat.createdAt | date('d/m/Y') }} <br>
+			Prix : {{ achat.amount }} DH
+			</p>
+			<a href="{{ path('achat_show', {'id': achat.id}) }}" class="btn btn-info">Plus d'information</a>
+		</div>
+	</div>
+	
+	{% endfor %}
+</div>
+{% endblock %}

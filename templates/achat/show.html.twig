@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande N°{{ achat.id }}{% endblock %}
+
+{% block body %}
+
+{% set annonce = achat.annonce %}
+{% set author = annonce.author %}
+<div class="container">
+
+	<h1 class="my-5">Commande numéro ({{ achat.id }})</h1>
+	
+	{% if app.request.query.get('withAlert') %}
+	<div class="alert alert-success">
+		<h4 >Bravo !</h4>
+		<p>Votre commende a bien été prise en compte !</p>
+	</div>
+	{% endif %}
+	
+	<div class="row">
+		<div class="col">
+			<div class="alert alert-dismissible alert-light">
+				<h2>Détails du commande :</h2>
+				<dl class="row">
+					<dt class="col-md-4">Numéro</dt>
+					<dd class="col-md-8">{{ achat.id }}</dd>
+					<dt class="col-md-4">Date</dt>
+					<dd class="col-md-8">{{ achat.createdAt | date('d/m/Y') }}</dd>
+					<dt class="col-md-4">Quantité </dt>
+					<dd class="col-md-8">{{ achat.quantity }}</dd>
+					<dt class="col-md-4">Mantant total</dt>
+					<dd class="col-md-8">{{ achat.amount }} DH</dd>
+				</dl>
+				<hr>
+				<h2 class="alert-heading">Vendeur :</h2>
+				<div class="row mb-3">
+					<div class="col-3">
+						<img alt="image du vendeur" class="avatar avatar-medium" src="{{ author.picture }}">
+					</div>
+					<div class="col-9">
+						<h4>
+							<a href="{{ path('user_show', {'slug': author.slug}) }}">{{ author.fullName }}</a>
+						</h4>
+						<span class="badge badge-primary py-2">{{ author.annonces | length }} annonces </span>
+					</div>
+				</div>
+				<p>{{ author.introduction }}</p>
+				<a href="{{ path('user_show', {'slug': author.slug}) }}" class="btn btn-primary">Plus d'infos sur {{ author.firstName }}</a>
+			</div>
+			
+			<div class="alert alert-light">
+				<h2 class="alert-heading">Votre avis compte <i class="far fa-comment-dots"></i></h2>
+			       
+			        {% set comment = annonce.commentFromAuthor(app.user) %}
+        
+			        {% if comment is not null %}
+			        	<blockquote>
+			        		{{ comment.content }}
+			        	</blockquote>
+			        	<strong>Note : </strong> {% include 'partials/rating.html.twig' with {'rating' : comment.rating} %}
+			        {% else %}
+			        
+        				{{ form_start(form) }}
+        				{{ form_widget(form) }}
+        				<button type="submit" class="btn btn-success">Confirmer !</button>
+        				{{ form_end(form) }}
+        			
+					{% endif %}
+			</div>
+		</div>
+		<div class="col">
+			<div class="alert alert-light">
+				<h2 class="alert-heading">Votre commande :</h2>
+				<h4>
+					<a href="{{ path('annonces_show', {'slug': annonce.slug}) }}">{{ annonce.title }}</a>
+				</h4>
+				<img alt="image de l'annonce" src="{{ annonce.coverImage }}" class="img-fluid">
+				<p>{{ annonce.introduction | raw }}</p>
+				<a href="{{ path('annonces_show', {'slug': annonce.slug}) }}" class="btn btn-primary">Plus d'informations</a>
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+{% endblock %}

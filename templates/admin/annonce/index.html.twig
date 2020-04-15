@@ -1,0 +1,44 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Administration des annonces !{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid">
+	<h1 class="my-5"><i class="fas fa-bullhorn"></i> Gestion des annonces :</h1>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Id</th>
+    			<th>Titre</th>
+    			<th>Auteur</th>
+    			<th class="text-center">Commandes</th>
+    			<th class="text-center">Notes</th>
+    			<th class="text-center">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for annonce in pagination.data %}
+			<tr>
+				<td>{{ annonce.id }}</td>
+				<td>{{ annonce.title }}</td>
+				<td>
+					<img src="{{ annonce.author.picture }}" class="avatar avatar-micro mr-2">{{ annonce.author.fullName }}
+				</td>
+				<td class="text-center">
+				    <span class="badge badge-primary rounded py-2 px-2">{{ annonce.achats | length }}</span>
+				</td>
+				<td class="text-center">
+				    <span class="badge badge-primary rounded py-2 px-2">{{ annonce.avgRatings | number_format(1,',',' ')}}</span>
+				</td>
+				<td class="text-center">
+					<a href="{{ path('admin_annonces_edit', {'id': annonce.id}) }}" class="btn btn-primary"><i class="far fa-edit"></i></a>
+					<a href="{{ path('admin_annonces_delete', {'id': annonce.id}) }}" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+    {{ pagination.display() }}
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="jumbotron">
+      	  <h1 class="display-3">Bienvenue sur Allo 7rayfi !</h1>
+          <p class="lead">la première plateforme pour les artisans au Maroc</p>
+          <hr class="my-4">
+          <p>Satisfait ou remboursé</p>
+          <p class="lead">
+            <a class="btn btn-primary btn-lg" href="#" role="button">En savoir plus</a>
+          </p>
+        </div>
+        
+        <h2 class="my-5">Les Artisans du mois</h2>
+        
+        <div class="row">
+        	{% for data in users %}
+        	<div class="col">
+        		<div class="card border-secondary mb-3">
+        			<div class="card-body">
+        				<h4 class="card-title">{{ data.user.fullName }}</h4>
+        				<hr>
+        				<div class="card-text">
+        					<img src="{{ data.user.picture }}" alt="avatar du user" class="avatar avatar-medium float-left mr-3">
+        					<p>{{ data.user.introduction }}</p>
+        					<a href="{{ path('user_show',{'slug': data.user.slug}) }}" class="btn btn-success float-right">Voir le profile :</a>
+        				</div>
+        			</div>
+        		</div>
+        	</div>
+        	{% endfor %}
+        </div>
+        
+        <h2 class="my-5">Annonces Stars :</h2>
+        
+        <div class="row">
+			{% for data in annonces %}
+				{% include 'annonce/_annonces.html.twig' with {'annonce': data.annonce} %}
+			{% endfor %}
+        </div>
+	</div>
+{% endblock %}
